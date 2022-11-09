@@ -86,14 +86,6 @@ jar {
 
 publishing {
     repositories {
-        maven {
-            name 'IzzelAliz'
-            url 'https://maven.izzel.io/releases'
-            credentials {
-                username = project.findProperty("maven_user")
-                password = project.findProperty("izzel_maven_token")
-            }
-        }
     }
     publications {
         mavenCore(MavenPublication) {
@@ -104,58 +96,8 @@ publishing {
                 builtBy build
                 classifier 'sources'
             }
-            artifactId = project.name
-            groupId = project.group
-            version = project.version
 
-            pom {
-                artifactId = project.name
-                groupId = project.group
-                version = project.version
-                name = rootProject.name
-                packaging = 'pom'
-                scm {
-                    url = 'https://github.com/BloCamLimb/ModernUI.git'
-                }
-                issueManagement {
-                    system = 'github'
-                    url = 'https://github.com/BloCamLimb/ModernUI/issues'
-                }
-                licenses {
-                    license {
-                        name = 'LGPL-3.0-or-later'
-                        url = 'https://www.gnu.org/licenses/lgpl-3.0.en.html'
-                        distribution = 'repo'
-                    }
-                }
-                withXml {
-                    def dependenciesNode = asNode().appendNode('dependencies')
-                    configurations.implementation.allDependencies.each {
-                        if (it.group == 'org.lwjgl') return
-                        def dependencyNode = dependenciesNode.appendNode('dependency')
-                        dependencyNode.appendNode('groupId', it.group)
-                        dependencyNode.appendNode('artifactId', it.name)
-                        dependencyNode.appendNode('version', it.version)
-                        dependencyNode.appendNode('scope', 'compile')
-                    }
-                    configurations.compileOnly.allDependencies.each {
-                        if (it.group == 'org.lwjgl') return
-                        def dependencyNode = dependenciesNode.appendNode('dependency')
-                        dependencyNode.appendNode('groupId', it.group)
-                        dependencyNode.appendNode('artifactId', it.name)
-                        dependencyNode.appendNode('version', it.version)
-                        dependencyNode.appendNode('scope', 'compile')
-                    }
-                    configurations.runtimeOnly.allDependencies.each {
-                        if (it.group == 'org.lwjgl') return
-                        def dependencyNode = dependenciesNode.appendNode('dependency')
-                        dependencyNode.appendNode('groupId', it.group)
-                        dependencyNode.appendNode('artifactId', it.name)
-                        dependencyNode.appendNode('version', it.version)
-                        dependencyNode.appendNode('scope', 'runtime')
-                    }
-                }
-            }
+
         }
     }
 }
